@@ -10,6 +10,8 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
+
+//TESTE
 public class PDI {
 	
 	public static Image escalaDeCinza(Image imagem, double red, double green, double blue){
