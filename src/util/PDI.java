@@ -449,16 +449,7 @@ public class PDI {
 					
 					Color newColor = new Color(color1, color2, color3, prevColor.getOpacity());
 					
-//					System.out.println("w1: " + w1);
-//					System.out.println("i: " + i);
-//					System.out.println("h1: " + h1);
-//					System.out.println("j: " + j);
-//					System.out.println("\n");
-//					System.out.println("Altura nova imagem: " + wi.getHeight());
-//					System.out.println("Largura nova imagem: " + wi.getWidth());
-					
 					pw.setColor(i, j, newColor);
-					
 				}
 			}
 			System.out.println("Executou rotate90()");
