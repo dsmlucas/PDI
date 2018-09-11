@@ -6,7 +6,12 @@ import java.io.File;
 import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
@@ -19,6 +24,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import util.PDI;
 
 public class AulaController {
@@ -275,4 +282,36 @@ public class AulaController {
 		img3 = img1;
 		openImg3();
 	}
+	
+	@FXML
+	public void openModalHistograma(ActionEvent event){
+		try {
+			Stage stage = new Stage();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("ModalHistograma.fxml"));
+			Parent root = loader.load();
+			stage.setScene(new Scene(root));
+			stage.setTitle("Histograma");
+//			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+			stage.show();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

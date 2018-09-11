@@ -221,6 +221,7 @@
             <Label fx:id="lblRed" layoutX="55.0" layoutY="15.0" prefHeight="18.0" prefWidth="61.0" style="-fx-font-size: 15;" text="Label" textAlignment="RIGHT" />
             <Label fx:id="lblGreen" layoutX="240.0" layoutY="15.0" prefHeight="18.0" prefWidth="61.0" style="-fx-font-size: 15;" text="Label" textAlignment="RIGHT" />
             <Label fx:id="lblBlue" layoutX="425.0" layoutY="15.0" prefHeight="18.0" prefWidth="54.0" style="-fx-font-size: 15;" text="Label" textAlignment="RIGHT" />
+            <Button layoutX="1142.0" layoutY="8.0" mnemonicParsing="false" onAction="#openModalHistograma" prefHeight="32.0" prefWidth="153.0" text="Histograma" />
          </children>
       </Pane>
    </children>
