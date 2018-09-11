@@ -111,10 +111,10 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#rotate" text="90º" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                              <Button layoutX="16.0" layoutY="58.0" mnemonicParsing="false" text="270º" />
-                              <Button layoutX="133.0" layoutY="16.0" mnemonicParsing="false" text="180º" AnchorPane.rightAnchor="5.0" />
-                              <Button layoutX="133.0" layoutY="58.0" mnemonicParsing="false" text="360º" AnchorPane.rightAnchor="5.0" />
+                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onMousePressed="#rotate90" text="90º" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="105.0" AnchorPane.topAnchor="5.0" />
+                              <Button layoutX="16.0" layoutY="58.0" mnemonicParsing="false" onMousePressed="#rotate270" text="270º" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="105.0" AnchorPane.topAnchor="45.0" />
+                              <Button layoutX="133.0" layoutY="16.0" mnemonicParsing="false" onMousePressed="#rotate180" text="180º" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="5.0" />
+                              <Button layoutX="133.0" layoutY="58.0" mnemonicParsing="false" onMousePressed="#rotatePadrao" text="Original" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="45.0" />
                            </children></AnchorPane>
                      </content>
                   </TitledPane>  

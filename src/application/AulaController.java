@@ -111,8 +111,6 @@ public class AulaController {
 	
 	public void openImg3(){
 		imageView3.setImage(img3);
-		System.out.println("img3.getWidth() : " + img3.getWidth());
-		System.out.println("img3.getHeight() : " + img3.getHeight());
 		imageView3.setFitWidth(img3.getWidth());
 		imageView3.setFitHeight(img3.getHeight());
 	}
@@ -205,7 +203,6 @@ public class AulaController {
 	@FXML
 	public void coordenada1(MouseEvent evt){
 		ImageView iw = (ImageView)evt.getTarget();
-		System.out.println("Check coordenada 1: " + habilitaMoldura.isSelected());
 		if (habilitaMoldura.isSelected() == true) {
 			if (iw.getImage() != null ) {
 				x1 = (int)evt.getX();
@@ -217,7 +214,6 @@ public class AulaController {
 	@FXML
 	public void coordenada2(MouseEvent evt){
 		ImageView iw = (ImageView)evt.getTarget();
-		System.out.println("Check coordenada 2: " + habilitaMoldura.isSelected());
 		if (habilitaMoldura.isSelected() == true) {
 			if (iw.getImage() != null) {
 				x2 = (int)evt.getX();
@@ -236,9 +232,27 @@ public class AulaController {
 	}
 	
 	@FXML
-	public void rotate(){
+	public void rotate90(){
 		img3 = PDI.rotate90(img1);
 		openImg3();
-		System.out.println("Executou rotate().");
+	}
+	
+	@FXML
+	public void rotate180(){
+		img3 = PDI.rotate90(img1);
+		img3 = PDI.rotate90(img3);
+		openImg3();
+	}
+	
+	public void rotate270(){
+		img3 = PDI.rotate90(img1);
+		img3 = PDI.rotate90(img3);
+		img3 = PDI.rotate90(img3);
+		openImg3();
+	}
+	
+	public void rotatePadrao(){
+		img3 = img1;
+		openImg3();
 	}
 }

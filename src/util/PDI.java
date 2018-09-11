@@ -439,9 +439,11 @@ public class PDI {
 			WritableImage wi = new WritableImage(h1,w1);
 			PixelWriter pw = wi.getPixelWriter();
 			
-			for (int i = 0; i < h1; i++) {
-				for (int j = 0; j < w1; j++) {
-					Color prevColor = pr1.getColor(j, i);
+			int m = w1 - 1;
+			for (int i = 0; i < w1; i++) {
+				int n = h1;
+				for (int j = 0; j < h1; j++) {
+					Color prevColor = pr1.getColor(i, j);
 
 					double color1 = (prevColor.getRed());
 					double color2 = (prevColor.getGreen());
@@ -449,12 +451,12 @@ public class PDI {
 					
 					Color newColor = new Color(color1, color2, color3, prevColor.getOpacity());
 					
-					pw.setColor(i, j, newColor);
+					pw.setColor(h1 - n, m, newColor);
+					n--;
 				}
+				m--;
 			}
-			System.out.println("Executou rotate90()");
 			return wi;
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
