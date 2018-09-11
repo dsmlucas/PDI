@@ -121,24 +121,42 @@ public class PDI {
 					if (tipoVizinho == Constantes.VIZINHOC){
 						p.vizC = criaVizinhoC(imagem, p, i, j);
 						
+						double medianaR = mediana(p.vizC, 1);
+						double medianaG = mediana(p.vizC, 2);
+						double medianaB = mediana(p.vizC, 3);
+						
+						Color newColor = new Color(medianaR, medianaG, medianaB, prevColor.getOpacity()); 
+						pw.setColor(i, j, newColor);
 					}
+					
 					if (tipoVizinho == Constantes.VIZINHOX) {
 						p.vizX = criaVizinhoX(imagem, p, i, j);
 						
+						double medianaR = mediana(p.vizX, 1);
+						double medianaG = mediana(p.vizX, 2);
+						double medianaB = mediana(p.vizX, 3);		
+
+						Color newColor = new Color(medianaR, medianaG, medianaB, prevColor.getOpacity()); 
+						pw.setColor(i, j, newColor);
 					}
+
 					if (tipoVizinho == Constantes.VIZINHO3X3) {
 						p.vizC = criaVizinhoC(imagem, p, i, j);
 						p.vizX = criaVizinhoX(imagem, p, i, j);
 
 						p.viz3.addAll(p.vizX);
-						p.viz3.addAll(p.vizC);						
+						p.viz3.addAll(p.vizC);	
+						
+						double medianaR = mediana(p.viz3, 1);
+						double medianaG = mediana(p.viz3, 2);
+						double medianaB = mediana(p.viz3, 3);		
+
+						Color newColor = new Color(medianaR, medianaG, medianaB, prevColor.getOpacity()); 
+						pw.setColor(i, j, newColor);
 					}
-					
-					
-					}
+				}
 			}
 			return wi;
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -464,21 +482,4 @@ public class PDI {
 		
 	}
 
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-

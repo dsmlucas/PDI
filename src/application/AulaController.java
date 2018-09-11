@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -51,6 +52,11 @@ public class AulaController {
 	//MOLDURA
 	private int x1, y1, x2, y2;
 	@FXML CheckBox habilitaMoldura; 
+	
+	//RUIDO
+	@FXML RadioButton radioC;
+	@FXML RadioButton radioX;
+	@FXML RadioButton radio3x3;
 	
 	@FXML
 	public void escalaDeCinzaMedia(){
@@ -194,6 +200,20 @@ public class AulaController {
 		openImg3();
 	}
 
+	@FXML
+	public void ruido(){
+		if (radioC.isSelected()) {
+			img3 = PDI.ruido(img1, 3);
+		}
+		if (radioX.isSelected()) {
+			img3 = PDI.ruido(img1, 2);
+		}
+		if (radio3x3.isSelected()) {
+			img3 = PDI.ruido(img1, 1);
+		}
+		openImg3();
+	}
+	
 	@FXML
 	public void moldura(){
 		img3 = PDI.moldura(img1, x1, x2, y1, y2);
