@@ -295,6 +295,15 @@ public class AulaController {
 			stage.initOwner(((Node)event.getSource()).getScene().getWindow());
 			stage.show();
 			
+			ModalHistogramaController controller = (ModalHistogramaController)loader.getController();
+			  
+			if(img1!=null)
+				PDI.getGrafico(img1, controller.grafico1);
+			if(img2!=null)
+				PDI.getGrafico(img2, controller.grafico2);
+			if(img3!=null)
+				PDI.getGrafico(img3, controller.grafico3);
+			  
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

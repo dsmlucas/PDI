@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -479,7 +483,92 @@ public class PDI {
 			e.printStackTrace();
 			return null;
 		}
-		
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static void getGrafico(Image img,BarChart<String, Number> grafico){
+		CategoryAxis eixoX = new CategoryAxis();
+		NumberAxis eixoY = new NumberAxis();
+	    eixoX.setLabel("Intensidade");       
+	    eixoY.setLabel("Valor");
+	    XYChart.Series vlr = new XYChart.Series();
+	    vlr.setName("Intensidade");
+	    
+//	    int[] his = histogramaUnico(img);
+	    int[] hist = histogramaRGB(img);
+	    
+	    for (int i=0; i<hist.length; i++) {
+	    	vlr.getData().add(new XYChart.Data(i+"", hist[i]/1000));
+		}
+	    grafico.getData().addAll(vlr);
+}
+
+	private static int[] histogramaUnico(Image img1) {
+		img1 = escalaDeCinza(img1, 0, 0, 0);
+		int[] tmp = new int[256];
+		
+		try {
+			int w1 = (int)img1.getWidth();
+			int h1 = (int)img1.getHeight();
+
+			PixelReader pr1 = img1.getPixelReader();
+			
+			for (int i = 0; i < w1; i++) {
+				for (int j = 0; j < h1; j++) {
+					Color prevColor = pr1.getColor(i, j);
+					
+					int m1 = (int) (((prevColor.getBlue() + prevColor.getGreen() + prevColor.getRed()) / 3) * 255);
+					tmp[(int) m1] = tmp[(int) m1] + 1;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+//		for (int i = 0; i < tmp.length; i++) {
+//			System.out.println("Vetor na posição " + (i + 1) + ": " + tmp[i]);
+//		}
+		return tmp;
+	}
+
+	private static int[] histogramaRGB(Image img1) {
+		int[] vectorRed = new int[256];
+		int[] vectorGreen = new int[256];
+		int[] vectorBlue = new int[256];
+		RGB[] vectorRGB = new RGB[256];
+		
+		try {
+			int w1 = (int)img1.getWidth();
+			int h1 = (int)img1.getHeight();
+	
+			PixelReader pr1 = img1.getPixelReader();
+			
+			for (int i = 0; i < w1; i++) {
+				for (int j = 0; j < h1; j++) {
+					Color prevColor = pr1.getColor(i, j);
+					
+					RGB rgb = new RGB();
+					
+					int mRed = (int) (prevColor.getRed() * 255);
+					vectorRed[(int) mRed] = vectorRed[(int) mRed] + 1;
+					
+					int mGreen = (int) (prevColor.getRed() * 255);
+					vectorGreen[(int) mGreen] = vectorGreen[(int) mGreen] + 1;
+					
+					int mBlue = (int) (prevColor.getRed() * 255);
+					vectorBlue[(int) mBlue] = vectorBlue[(int) mBlue] + 1;
+					
+					rgb.setRed(mRed);
+					rgb.setGreen(mGreen);
+					rgb.setBlue(mBlue);
+	
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	//	for (int i = 0; i < tmp.length; i++) {
+	//		System.out.println("Vetor na posição " + (i + 1) + ": " + tmp[i]);
+	//	}
+		return vectorRed;
+	}
 }
