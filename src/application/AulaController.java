@@ -309,7 +309,11 @@ public class AulaController {
 		}
 	}
 
-
+	@FXML
+	public void equalizaHistograma(){
+		img3 = PDI.equalizacaoHistograma(img1);
+		openImg3();
+	}
 
 
 

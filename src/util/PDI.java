@@ -494,8 +494,8 @@ public class PDI {
 	    XYChart.Series vlr = new XYChart.Series();
 	    vlr.setName("Intensidade");
 	    
-//	    int[] his = histogramaUnico(img);
-	    int[] hist = histogramaRGB(img);
+	    int[] hist = histogramaUnico(img);
+//	    int[] hist = histogramaRGB(img);
 	    
 	    for (int i=0; i<hist.length; i++) {
 	    	vlr.getData().add(new XYChart.Data(i+"", hist[i]/1000));
@@ -521,54 +521,75 @@ public class PDI {
 					tmp[(int) m1] = tmp[(int) m1] + 1;
 				}
 			}
-		} catch (Exception e) {
+		} catch (Exception e) {  
 			e.printStackTrace();
 		}
-//		for (int i = 0; i < tmp.length; i++) {
-//			System.out.println("Vetor na posição " + (i + 1) + ": " + tmp[i]);
-//		}
 		return tmp;
 	}
-
-	private static int[] histogramaRGB(Image img1) {
-		int[] vectorRed = new int[256];
-		int[] vectorGreen = new int[256];
-		int[] vectorBlue = new int[256];
-		RGB[] vectorRGB = new RGB[256];
-		
-		try {
-			int w1 = (int)img1.getWidth();
-			int h1 = (int)img1.getHeight();
 	
-			PixelReader pr1 = img1.getPixelReader();
-			
+	public static int[] histogramaAcumulado(int[] hist){
+		int[] ret = new int[hist.length];
+		int vl = hist[0];
+		for(int i=0; i<hist.length-1; i++){
+			ret[i] = vl;
+			vl += hist[i+1];
+		}
+		return ret;
+}
+	
+	public static Image equalizacaoHistograma(Image img){
+	    int w = (int)img.getWidth();
+	    int h = (int)img.getHeight();
+    	PixelReader pr = img.getPixelReader();
+    	WritableImage wi = new WritableImage(w,h);
+    	PixelWriter pw = wi.getPixelWriter();
+    	
+    	int[] hR = histograma(img, 1);
+		int[] hG = histograma(img, 2);
+		int[] hB = histograma(img, 3);
+		int[] histAcR = histogramaAcumulado(hR);
+		int[] histAcG = histogramaAcumulado(hB);
+		int[] histAcB = histogramaAcumulado(hG);
+    	for (int i=1; i < w; i++){
+    		for (int j=1; j < h; j++){	
+    			Color oldCor = pr.getColor(i,j);
+    			double acR = histAcR[(int)(oldCor.getRed()*255)];
+    			double acG = histAcG[(int)(oldCor.getGreen()*255)];
+    			double acB = histAcB[(int)(oldCor.getBlue()*255)];
+    			double n = w*h;
+    			double pxR = ((255-1)/n)*acR;
+    			double pxG = ((255-1)/n)*acG;
+    			double pxB = ((255-1)/n)*acB;
+    			double corR = pxR/255;
+    			double corG = pxG/255;
+    			double corB = pxB/255;
+    			Color newCor = new Color(corR,corG,corB,oldCor.getOpacity());
+    			pw.setColor(i, j, newCor);
+    		}
+    	}
+    	return wi;
+}
+	
+	private static int[] histograma(Image img1, int canal) {
+		
+		PixelReader pr = img1.getPixelReader();
+		int w1 = (int)img1.getWidth();
+		int h1 = (int)img1.getHeight();
+		int[] vetor = new int[256];
+	
 			for (int i = 0; i < w1; i++) {
 				for (int j = 0; j < h1; j++) {
-					Color prevColor = pr1.getColor(i, j);
+					Color prevColor = pr.getColor(i, j);
 					
-					RGB rgb = new RGB();
-					
-					int mRed = (int) (prevColor.getRed() * 255);
-					vectorRed[(int) mRed] = vectorRed[(int) mRed] + 1;
-					
-					int mGreen = (int) (prevColor.getRed() * 255);
-					vectorGreen[(int) mGreen] = vectorGreen[(int) mGreen] + 1;
-					
-					int mBlue = (int) (prevColor.getRed() * 255);
-					vectorBlue[(int) mBlue] = vectorBlue[(int) mBlue] + 1;
-					
-					rgb.setRed(mRed);
-					rgb.setGreen(mGreen);
-					rgb.setBlue(mBlue);
-	
+					if (canal == Constantes.CANALR) {
+						vetor[(int)(prevColor.getRed() * 255)]++;
+					} else if (canal == Constantes.CANALG) {
+						vetor[(int)(prevColor.getGreen() * 255)]++;
+					}else if (canal == Constantes.CANALB) {
+						vetor[(int)(prevColor.getBlue() * 255)]++;
+					}
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	//	for (int i = 0; i < tmp.length; i++) {
-	//		System.out.println("Vetor na posição " + (i + 1) + ": " + tmp[i]);
-	//	}
-		return vectorRed;
+		return vetor;
 	}
 }
