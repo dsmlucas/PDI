@@ -495,7 +495,6 @@ public class PDI {
 	    vlr.setName("Intensidade");
 	    
 	    int[] hist = histogramaUnico(img);
-//	    int[] hist = histogramaRGB(img);
 	    
 	    for (int i=0; i<hist.length; i++) {
 	    	vlr.getData().add(new XYChart.Data(i+"", hist[i]/1000));
@@ -528,13 +527,13 @@ public class PDI {
 	}
 	
 	public static int[] histogramaAcumulado(int[] hist){
-		int[] ret = new int[hist.length];
+		int[] tmp = new int[hist.length];
 		int vl = hist[0];
 		for(int i=0; i<hist.length-1; i++){
-			ret[i] = vl;
+			tmp[i] = vl;
 			vl += hist[i+1];
 		}
-		return ret;
+		return tmp;
 }
 	
 	public static Image equalizacaoHistograma(Image img){
@@ -550,9 +549,11 @@ public class PDI {
 		int[] histAcR = histogramaAcumulado(hR);
 		int[] histAcG = histogramaAcumulado(hB);
 		int[] histAcB = histogramaAcumulado(hG);
+		
     	for (int i=1; i < w; i++){
     		for (int j=1; j < h; j++){	
     			Color oldCor = pr.getColor(i,j);
+    			
     			double acR = histAcR[(int)(oldCor.getRed()*255)];
     			double acG = histAcG[(int)(oldCor.getGreen()*255)];
     			double acB = histAcB[(int)(oldCor.getBlue()*255)];
@@ -563,12 +564,13 @@ public class PDI {
     			double corR = pxR/255;
     			double corG = pxG/255;
     			double corB = pxB/255;
+    			
     			Color newCor = new Color(corR,corG,corB,oldCor.getOpacity());
     			pw.setColor(i, j, newCor);
     		}
     	}
     	return wi;
-}
+	}
 	
 	private static int[] histograma(Image img1, int canal) {
 		
