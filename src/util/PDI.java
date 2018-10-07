@@ -530,7 +530,7 @@ public class PDI {
 		int[] tmp = new int[hist.length];
 		int vl = hist[0];
 		for(int i=0; i<hist.length-1; i++){
-			tmp[i] = vl;
+			tmp[i] = vl; 
 			vl += hist[i+1];
 		}
 		return tmp;
@@ -549,27 +549,40 @@ public class PDI {
 		int[] histAcR = histogramaAcumulado(hR);
 		int[] histAcG = histogramaAcumulado(hB);
 		int[] histAcB = histogramaAcumulado(hG);
+		int tonsValidos = tonsValidos(histogramaUnico(img));
+//		int tonsValidos = 255;
+
 		
     	for (int i=1; i < w; i++){
     		for (int j=1; j < h; j++){	
     			Color oldCor = pr.getColor(i,j);
     			
-    			double acR = histAcR[(int)(oldCor.getRed()*255)];
-    			double acG = histAcG[(int)(oldCor.getGreen()*255)];
-    			double acB = histAcB[(int)(oldCor.getBlue()*255)];
-    			double n = w*h;
-    			double pxR = ((255-1)/n)*acR;
-    			double pxG = ((255-1)/n)*acG;
-    			double pxB = ((255-1)/n)*acB;
-    			double corR = pxR/255;
-    			double corG = pxG/255;
-    			double corB = pxB/255;
+    			double acR = histAcR[(int)(oldCor.getRed() * 255)];
+    			double acG = histAcG[(int)(oldCor.getGreen() * 255)];
+    			double acB = histAcB[(int)(oldCor.getBlue() * 255)];
+    			double n = w * h;
+    			double pxR = ((tonsValidos - 1) / n) * acR;
+    			double pxG = ((tonsValidos - 1) / n) * acG;
+    			double pxB = ((tonsValidos - 1) / n) * acB;
+    			double corR = pxR / 255;
+    			double corG = pxG / 255;
+    			double corB = pxB / 255;
     			
     			Color newCor = new Color(corR,corG,corB,oldCor.getOpacity());
     			pw.setColor(i, j, newCor);
     		}
     	}
     	return wi;
+	}
+	
+	private static int tonsValidos(int[] tmp){
+		int tons = 0;
+		for (int i = 0; i < tmp.length; i++) {
+			if (tmp[i] == 0) {
+				tons++;
+			}
+		}
+		return tons;
 	}
 	
 	private static int[] histograma(Image img1, int canal) {
@@ -594,4 +607,89 @@ public class PDI {
 			}
 		return vetor;
 	}
+	
+	
+//	QUESTOES DA PROVA DE EXEMPLO
+	
+	public static Image q1(Image imagem, double red, double green, double blue, int n1, int n2){
+		try {
+			int w = (int)imagem.getWidth();
+			int h = (int)imagem.getHeight();
+			
+			ArrayList<Color> quadrante1 = new ArrayList<>();
+			ArrayList<Color> quadrante2 = new ArrayList<>();
+			ArrayList<Color> quadrante3 = new ArrayList<>();
+			
+			PixelReader pr = imagem.getPixelReader();
+			WritableImage wi = new WritableImage(w,h);
+			PixelWriter pw = wi.getPixelWriter();
+			
+			for (int i = 0; i < w; i++) {
+				for (int j = 0; j < h; j++) {
+					pw.setColor(i, j, pr.getColor(i, j));
+				}
+			}
+
+			if (n1 == 1 || n2 == 1) {
+				for (int i = 0; i < w/2; i++) {
+					for (int j = 0; j < h/2; j++) {
+						quadrante1.add(pr.getColor(i, j));
+					}
+				}
+				
+				int count = 0;
+				for (int i = (w/2)-1; i > 0; i--) {
+					for (int j = (h/2)-1; j > 0; j--) {
+						pw.setColor(i, j, quadrante1.get(count));
+						count++;
+					}
+					count++;
+				}
+			}
+			
+			if (n1 == 2 || n2 == 2) {
+				for (int i = w/2; i < w; i++) {
+					for (int j = 0; j < h/2; j++) {
+						quadrante2.add(pr.getColor(i, j));
+					}
+				}
+				
+				int count = 0;
+				for (int i = w-1; i > (w/2)-1; i--) {
+					for (int j = (h/2)-1; j > 0; j--) {
+						pw.setColor(i, j, quadrante2.get(count));
+						count++;
+					}
+					count++;
+				}
+			}
+			
+			if (n1 == 3 || n2 == 3) {
+				for (int i = 0; i < w/2; i++) {
+					for (int j = h/2; j < h; j++) {
+						quadrante3.add(pr.getColor(i, j));
+					}
+				}
+				
+				int count = 0;
+				for (int i = (w/2)-1; i > 0; i--) {
+					for (int j = h-2; j > (h/2)-1; j--) {
+						pw.setColor(i, j, quadrante3.get(count));
+						count++;
+					}
+					count++;
+				}
+			}
+			
+			
+			return wi;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	
 }

@@ -315,7 +315,13 @@ public class AulaController {
 		openImg3();
 	}
 
-
+	@FXML
+	public void questao1(){
+//		img3 = PDI.rotate90(img1);
+//		img3 = PDI.rotate90(img3);
+		img3 = PDI.q1(img1, 0, 0, 0, 1, 3);
+		openImg3();
+	}
 
 
 

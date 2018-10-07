@@ -133,6 +133,33 @@
                            </children></AnchorPane>
                      </content>
                   </TitledPane>
+                  <TitledPane animated="false" text="Questão 01">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#questao1" prefHeight="32.0" prefWidth="77.0" text="Executar" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="Questão 02">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#equalizaHistograma" prefHeight="32.0" prefWidth="77.0" text="Executar" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="Questão 03">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#equalizaHistograma" prefHeight="32.0" prefWidth="77.0" text="Executar" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
               </panes>
                <BorderPane.margin>
                   <Insets />
