@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
@@ -142,20 +143,45 @@
                         </AnchorPane>
                      </content>
                   </TitledPane>
-                  <TitledPane animated="false" text="Questão 02">
+                  <TitledPane animated="false" text="Prova 01">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#equalizaHistograma" prefHeight="32.0" prefWidth="77.0" text="Executar" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#prova01" prefHeight="32.0" prefWidth="77.0" text="Executar" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="110.0" />
+                              <TextField fx:id="p" layoutX="9.0" layoutY="48.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="30.0" />
+                              <Label layoutX="38.0" layoutY="23.0" text="Pixels Borda" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                              <ColorPicker fx:id="c1" layoutX="14.0" layoutY="81.0" AnchorPane.leftAnchor="5.0" />
                            </children>
                         </AnchorPane>
                      </content>
                   </TitledPane>
-                  <TitledPane animated="false" text="Questão 03">
+                  <TitledPane animated="false" text="Prova 02">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#equalizaHistograma" prefHeight="32.0" prefWidth="77.0" text="Executar" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#prova02" prefHeight="32.0" prefWidth="77.0" text="Executar" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="Prova 03">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#prova03" prefHeight="32.0" prefWidth="77.0" text="Executar" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane animated="false" text="OpenCV">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#erosao" prefHeight="32.0" prefWidth="77.0" text="Erosão" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                              <Button layoutX="16.0" layoutY="48.0" mnemonicParsing="false" onAction="#dilatacao" prefHeight="32.0" prefWidth="77.0" text="Dilatação" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="45.0" />
+                              <Button layoutX="26.0" layoutY="58.0" mnemonicParsing="false" onAction="#canny" prefHeight="32.0" prefWidth="77.0" text="Canny" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="95.0" />
+                              <Button layoutX="36.0" layoutY="68.0" mnemonicParsing="false" onAction="#prewitt" prefHeight="32.0" prefWidth="77.0" text="Prewitt" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="135.0" />
+                              <Button layoutX="46.0" layoutY="78.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="77.0" text="Sobel" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="175.0" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -236,5 +262,7 @@
             <Button layoutX="1142.0" layoutY="8.0" mnemonicParsing="false" onAction="#openModalHistograma" prefHeight="32.0" prefWidth="153.0" text="Histograma" />
          </children>
       </Pane>
+      <Label fx:id="coordx" layoutX="589.0" layoutY="25.0" prefHeight="19.0" prefWidth="71.0" style="-fx-font-size: 15;" text="X:" textAlignment="RIGHT" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="15.0" />
+      <Label fx:id="coordy" layoutX="445.0" layoutY="35.0" prefHeight="19.0" prefWidth="71.0" style="-fx-font-size: 15;" text="Y:" textAlignment="RIGHT" AnchorPane.leftAnchor="700.0" AnchorPane.topAnchor="15.0" />
    </children>
 </AnchorPane>

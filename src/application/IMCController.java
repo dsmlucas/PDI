@@ -3,7 +3,7 @@ package application;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-public class TelaController {
+public class IMCController {
 	@FXML TextField txtPeso;
 	@FXML TextField txtAltura;
 	@FXML TextField txtIMC;

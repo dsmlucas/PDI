@@ -4,10 +4,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Size;
+import org.opencv.highgui.HighGui;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -48,6 +58,7 @@ public class PDI {
 			return null;
 		}
 	}
+
 
 	public static Image limiarizacao(Image imagem, double limiar){
 		try {
@@ -619,6 +630,7 @@ public class PDI {
 			ArrayList<Color> quadrante1 = new ArrayList<>();
 			ArrayList<Color> quadrante2 = new ArrayList<>();
 			ArrayList<Color> quadrante3 = new ArrayList<>();
+			ArrayList<Color> quadrante4 = new ArrayList<>();
 			
 			PixelReader pr = imagem.getPixelReader();
 			WritableImage wi = new WritableImage(w,h);
@@ -681,6 +693,82 @@ public class PDI {
 				}
 			}
 			
+	        if (n1 == 4 || n2 == 4) {
+				for (int i = w/2; i < w; i++) {
+					for (int j = h/2; j < h; j++) {
+	                    quadrante4.add(pr.getColor(i, j));
+	                }
+	            }
+
+	            int count = 0;
+				for (int i = w-1; i > (w/2)-1; i--) {
+	                for (int j = h-2; j > (h/2)-1; j--) {
+	                    pw.setColor(i, j, quadrante4.get(count));
+	                    count++;
+	                }
+	                count++;
+	            }
+	        }
+			return wi;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Image prova01(Image imagem, ColorPicker c1, int p){
+		try {
+			int w = (int)imagem.getWidth();
+			int h = (int)imagem.getHeight();
+			
+			PixelReader pr = imagem.getPixelReader();
+			WritableImage wi = new WritableImage(w,h);
+			PixelWriter pw = wi.getPixelWriter();
+			
+			for (int i = 0; i < w; i++) {
+				for (int j = 0; j < h; j++) {
+					if (i <= p || i >=(w-p) || j <= p || j >=(h-p)) {
+						pw.setColor(i, j, c1.getValue());
+					}else {
+						pw.setColor(i, j, pr.getColor(i, j));
+					}
+				}
+			}
+			return wi;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Image prova02(Image imagem){
+		try {
+			int w = (int)imagem.getWidth();
+			int h = (int)imagem.getHeight();
+			
+			PixelReader pr = imagem.getPixelReader();
+			WritableImage wi = new WritableImage(w,h);
+			PixelWriter pw = wi.getPixelWriter();
+			
+			for (int i = 0; i < w; i++) {
+				for (int j = 0; j < h; j++) {
+					Color prevColor = pr.getColor(i, j);
+					if (j <= h/2) {
+						double color1 = (1 - (prevColor.getRed()));
+						double color2 = (1 - (prevColor.getGreen()));
+						double color3 = (1 - (prevColor.getBlue()));
+						Color newColor = new Color(color1, color2, color3, prevColor.getOpacity());
+						pw.setColor(i, j, newColor);
+					
+					} else {
+						double mediaA = (prevColor.getBlue() + prevColor.getGreen() + prevColor.getRed())/3;
+						Color newColor = new Color(mediaA, mediaA, mediaA, prevColor.getOpacity());
+						pw.setColor(i, j, newColor);
+					}
+				}
+			}
 			
 			return wi;
 			
@@ -690,6 +778,162 @@ public class PDI {
 		}
 	}
 	
+	public static Image prova03(Image imagem){
+		try {
+			int w = (int)imagem.getWidth();
+			int h = (int)imagem.getHeight();
+			
+			PixelReader pr = imagem.getPixelReader();
+			WritableImage wi = new WritableImage(w,h);
+
+			int x1 = 0; 
+			int y1 = 0; 
+			
+			for (int i = 0; i < w; i++) {
+				for (int j = 0; j < h; j++) {
+					if (pr.getColor(i, j).getBlue() == 0.0 && pr.getColor(i, j).getRed() == 0.0 && pr.getColor(i, j).getGreen() == 0.0) {
+						if (x1 == 0 && y1 == 0) {
+							x1 = i;
+							y1 = j;
+						}
+					}
+				}
+			}
+			System.out.println("X1: " + x1 );
+			System.out.println("Y1: " + y1 );
+			System.out.println("Largura: " + w);
+			System.out.println("Altura: " + h);
+
+			return wi;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static void carregaOpenCV(){
+//		System.out.println(System.getProperty("java.library.path"));
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+	}
 	
+	public static void erosao(){
+		
+		try {
+			carregaOpenCV();
+			
+			String inputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
+			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/erosao.jpg";
+			
+			Mat matImgDst = new Mat();
+			Mat matImgSrc = Imgcodecs.imread(inputFile);
+			
+			int kernel = 5;
+			
+			Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * kernel + 1, 2 * kernel + 1), new Point(kernel, kernel));
+			Imgproc.erode(matImgSrc, matImgDst, element);	
+			
+			Imgcodecs.imwrite(outputFile, matImgDst);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void dilatacao(){
+		
+		try {
+			carregaOpenCV();
+			
+			String inputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
+			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/dilatacao.jpg";
+			
+			Mat matImgDst = new Mat();
+			Mat matImgSrc = Imgcodecs.imread(inputFile);
+			
+			int kernel = 5;
+			
+			Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * kernel + 1, 2 * kernel + 1), new Point(kernel, kernel));
+			Imgproc.dilate(matImgSrc, matImgDst, element);	
+			
+			Imgcodecs.imwrite(outputFile, matImgDst);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void canny(){
+		
+		try {
+			carregaOpenCV();
+			
+			String inputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
+			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/canny.jpg";
+			
+			Mat matImgDst = new Mat();
+			Mat matImgSrc = Imgcodecs.imread(inputFile);
+
+			Imgproc.Canny(matImgSrc, matImgDst, 10, 100); 
+			Imgcodecs.imwrite(outputFile, matImgDst);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void prewitt(){
+		
+		try {
+			carregaOpenCV();
+			
+			String inputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
+			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/prewitt.jpg";
+			
+			Mat matImgDst = new Mat();
+			Mat matImgSrc = Imgcodecs.imread(inputFile);
+
+			int kernelSize = 9;
+			
+	        Mat kernel = new Mat(kernelSize,kernelSize, CvType.CV_32F) {
+	        	{
+	        		put(0,0,-1);
+	        		put(0,1,0);
+	                put(0,2,1);
+
+	                put(1,0-1);
+	                put(1,1,0);
+	                put(1,2,1);
+
+	                put(2,0,-1);
+	                put(2,1,0);
+	                put(2,2,1);
+	             }
+	          };	 
+			
+			Imgproc.filter2D(matImgSrc, matImgDst, -1, kernel); 
+			Imgcodecs.imwrite(outputFile, matImgDst);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void sobel(){
+		
+		try {
+			carregaOpenCV();
+			
+			String inputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/cinza.jpg";
+			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/canny.jpg";
+			
+			Mat matImgDst = new Mat();
+			Mat matImgSrc = Imgcodecs.imread(inputFile);
+
+			Imgproc.Canny(matImgSrc, matImgDst, 10, 100); 
+			Imgcodecs.imwrite(outputFile, matImgDst);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

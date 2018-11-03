@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
@@ -34,6 +35,8 @@ public class AulaController {
 	@FXML Label lblRed;
 	@FXML Label lblGreen;
 	@FXML Label lblBlue;
+	@FXML Label coordx;
+	@FXML Label coordy;
 
 	@FXML ImageView imageView1;
 	@FXML ImageView imageView2;
@@ -65,6 +68,11 @@ public class AulaController {
 	@FXML RadioButton radioX;
 	@FXML RadioButton radio3x3;
 	
+	
+	//PROVA01
+	@FXML ColorPicker c1;
+	@FXML TextField p;
+
 	@FXML
 	public void escalaDeCinzaMedia(){
 		img3 = PDI.escalaDeCinza(img1, 0, 0, 0);
@@ -144,6 +152,10 @@ public class AulaController {
 			lblGreen.setTextFill(Color.GREEN);
 			lblBlue.setText("" + (int) (cor.getBlue()*255));
 			lblBlue.setTextFill(Color.BLUE);
+			
+			coordx.setText("" + x);
+			coordy.setText("" + y);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -163,7 +175,7 @@ public class AulaController {
 																						"*.png", "*.PNG",
 																						"*.gif", "*.GIF",
 																						"*.bmp", "*.BMP"));
-		filechoose.setInitialDirectory(new File("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/img/"));
+//		filechoose.setInitialDirectory(new File("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/img/"));
 		File imgSelec = filechoose.showOpenDialog(null);
 		try {
 			if (imgSelec != null) {
@@ -180,7 +192,7 @@ public class AulaController {
 		if(img3 != null){
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imagem", "*.png"));
-			fileChooser.setInitialDirectory(new File("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/img/save"));
+//			fileChooser.setInitialDirectory(new File("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/img/save"));
 			File file = fileChooser.showSaveDialog(null);
 			if (file != null) {
 				BufferedImage bImg = SwingFXUtils.fromFXImage(img3, null);
@@ -317,20 +329,51 @@ public class AulaController {
 
 	@FXML
 	public void questao1(){
-//		img3 = PDI.rotate90(img1);
-//		img3 = PDI.rotate90(img3);
-		img3 = PDI.q1(img1, 0, 0, 0, 1, 3);
+		img3 = PDI.q1(img1, 0, 0, 0, 1, 4);
 		openImg3();
 	}
 
+	@FXML
+	public void prova01(){
+		int n = Integer.parseInt(p.getText());
+		img3 = PDI.prova01(img1, c1, n);
+		openImg3();
+	}
 
+	@FXML
+	public void prova02(){
+		img3 = PDI.prova02(img1);
+		openImg3();
+	}
 
+	@FXML
+	public void prova03(){
+		PDI.prova03(img1);
+	}
 
+	@FXML
+	public void erosao(){
+		PDI.erosao();
+	}
 
+	@FXML
+	public void dilatacao(){
+		PDI.dilatacao();
+	}
 
+	@FXML
+	public void canny(){
+		PDI.canny();
+	}
 
+	@FXML
+	public void prewitt(){
+		PDI.prewitt();
+	}
 
-
-
+	@FXML
+	public void sobel(){
+		PDI.sobel();
+	}
 
 }
