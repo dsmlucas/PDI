@@ -817,23 +817,27 @@ public class PDI {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
 	
+	static String SAVE_DIR = "/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 6 - Teste 1/";
+	static String INPUT_FILE  = SAVE_DIR + "dilatacao2.png";
+	static String OUTPUT_FILE = SAVE_DIR + "dilatacao3.png";
+	
 	public static void erosao(){
 		
 		try {
 			carregaOpenCV();
 			
-			String inputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
-			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/erosao.jpg";
+//			String INPUT_FILE = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
+//			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/erosao.jpg";
 			
 			Mat matImgDst = new Mat();
-			Mat matImgSrc = Imgcodecs.imread(inputFile);
+			Mat matImgSrc = Imgcodecs.imread(INPUT_FILE);
 			
-			int kernel = 5;
+			int kernel = 1;
 			
 			Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * kernel + 1, 2 * kernel + 1), new Point(kernel, kernel));
 			Imgproc.erode(matImgSrc, matImgDst, element);	
 			
-			Imgcodecs.imwrite(outputFile, matImgDst);
+			Imgcodecs.imwrite(OUTPUT_FILE, matImgDst);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -844,36 +848,58 @@ public class PDI {
 		try {
 			carregaOpenCV();
 			
-			String inputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
-			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/dilatacao.jpg";
+//			String INPUT_FILE = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
+//			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/dilatacao.jpg";
 			
 			Mat matImgDst = new Mat();
-			Mat matImgSrc = Imgcodecs.imread(inputFile);
+			Mat matImgSrc = Imgcodecs.imread(INPUT_FILE);
 			
-			int kernel = 5;
+			int kernel = 1;
 			
 			Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * kernel + 1, 2 * kernel + 1), new Point(kernel, kernel));
 			Imgproc.dilate(matImgSrc, matImgDst, element);	
 			
-			Imgcodecs.imwrite(outputFile, matImgDst);
+			Imgcodecs.imwrite(OUTPUT_FILE, matImgDst);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public static void gaussian(){
+		
+		try {
+			carregaOpenCV();
+			
+//			String INPUT_FILE = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
+//			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/erosao.jpg";
+			
+			Mat matImgSrc = Imgcodecs.imread(INPUT_FILE);
+			Mat matImgDst = new Mat(matImgSrc.rows(),matImgSrc.cols(),matImgSrc.type());
+			
+			Imgproc.GaussianBlur(matImgSrc, matImgDst,new Size(45,45), 0);
+//			HighGui.imshow(outputFile, matImgDst); 
+			
+			Imgcodecs.imwrite(OUTPUT_FILE, matImgDst);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void canny(){
 		
 		try {
 			carregaOpenCV();
 			
-			String inputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
-			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/canny.jpg";
+//			String INPUT_FILE = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
+//			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/canny.jpg";
 			
 			Mat matImgDst = new Mat();
-			Mat matImgSrc = Imgcodecs.imread(inputFile);
+			Mat matImgSrc = Imgcodecs.imread(INPUT_FILE);
 
-			Imgproc.Canny(matImgSrc, matImgDst, 10, 100); 
-			Imgcodecs.imwrite(outputFile, matImgDst);
+//			Imgproc.Canny(matImgSrc, matImgDst, 10, 100); 
+			Imgproc.Canny(matImgSrc, matImgDst, 150, 150); 
+			Imgcodecs.imwrite(OUTPUT_FILE, matImgDst);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -885,11 +911,11 @@ public class PDI {
 		try {
 			carregaOpenCV();
 			
-			String inputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
-			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/prewitt.jpg";
+//			String INPUT_FILE = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
+//			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/prewitt.jpg";
 			
 			Mat matImgDst = new Mat();
-			Mat matImgSrc = Imgcodecs.imread(inputFile);
+			Mat matImgSrc = Imgcodecs.imread(INPUT_FILE);
 
 			int kernelSize = 9;
 			
@@ -910,7 +936,7 @@ public class PDI {
 	          };	 
 			
 			Imgproc.filter2D(matImgSrc, matImgDst, -1, kernel); 
-			Imgcodecs.imwrite(outputFile, matImgDst);
+			Imgcodecs.imwrite(OUTPUT_FILE, matImgDst);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -922,14 +948,14 @@ public class PDI {
 		try {
 			carregaOpenCV();
 			
-			String inputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/cinza.jpg";
-			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/canny.jpg";
+//			String INPUT_FILE = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/cinza.jpg";
+//			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/canny.jpg";
 			
 			Mat matImgDst = new Mat();
-			Mat matImgSrc = Imgcodecs.imread(inputFile);
+			Mat matImgSrc = Imgcodecs.imread(INPUT_FILE);
 
 			Imgproc.Canny(matImgSrc, matImgDst, 10, 100); 
-			Imgcodecs.imwrite(outputFile, matImgDst);
+			Imgcodecs.imwrite(OUTPUT_FILE, matImgDst);
 
 		} catch (Exception e) {
 			e.printStackTrace();

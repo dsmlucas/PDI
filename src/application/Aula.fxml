@@ -182,6 +182,7 @@
                               <Button layoutX="26.0" layoutY="58.0" mnemonicParsing="false" onAction="#canny" prefHeight="32.0" prefWidth="77.0" text="Canny" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="95.0" />
                               <Button layoutX="36.0" layoutY="68.0" mnemonicParsing="false" onAction="#prewitt" prefHeight="32.0" prefWidth="77.0" text="Prewitt" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="135.0" />
                               <Button layoutX="46.0" layoutY="78.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="77.0" text="Sobel" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="175.0" />
+                              <Button layoutX="56.0" layoutY="88.0" mnemonicParsing="false" onAction="#gaussian" prefHeight="32.0" prefWidth="77.0" text="Gaussian" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="225.0" />
                            </children>
                         </AnchorPane>
                      </content>

@@ -375,5 +375,10 @@ public class AulaController {
 	public void sobel(){
 		PDI.sobel();
 	}
+	
+	@FXML
+	public void gaussian(){
+		PDI.gaussian();
+	}
 
 }
