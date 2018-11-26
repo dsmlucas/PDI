@@ -817,9 +817,38 @@ public class PDI {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
 	
-	static String SAVE_DIR = "/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 6 - Teste 1/";
-	static String INPUT_FILE  = SAVE_DIR + "dilatacao2.png";
-	static String OUTPUT_FILE = SAVE_DIR + "dilatacao3.png";
+	static String CINZA 	= "1-cinza.png";
+	static String GAUSSIAN  = "2-gaussian.png";
+	static String CANNY 	= "3-canny.png";
+	static String DILATACAO = "4-dilatacao.png";
+
+	static String SAVE_DIR = "/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 1 - Teste 1/";
+	static String INPUT_FILE  = SAVE_DIR + GAUSSIAN;
+	static String OUTPUT_FILE = SAVE_DIR + CANNY;
+	
+	static ArrayList<String> ALL_DIR_IN = new ArrayList<String>();
+	static ArrayList<String> ALL_DIR_OUT = new ArrayList<String>();
+		
+	public static void gaussian(){
+		
+		try {
+			carregaOpenCV();
+			
+//			String INPUT_FILE = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
+//			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/erosao.jpg";
+			
+			Mat matImgSrc = Imgcodecs.imread(INPUT_FILE);
+			Mat matImgDst = new Mat(matImgSrc.rows(),matImgSrc.cols(),matImgSrc.type());
+			
+			Imgproc.GaussianBlur(matImgSrc, matImgDst,new Size(15,15), 1);
+			HighGui.imshow(OUTPUT_FILE, matImgDst); 
+			
+			Imgcodecs.imwrite(OUTPUT_FILE, matImgDst);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static void erosao(){
 		
@@ -846,60 +875,47 @@ public class PDI {
 	public static void dilatacao(){
 		
 		try {
+			
 			carregaOpenCV();
 			
-//			String INPUT_FILE = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
-//			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/dilatacao.jpg";
+			monta_diretorios(CANNY, DILATACAO);
+
+			for (int i = 0; i < ALL_DIR_IN.size(); i++) {
+				
+				Mat matImgDst = new Mat();
+				Mat matImgSrc = Imgcodecs.imread(ALL_DIR_IN.get(i));
+				
+				int kernel = 4;
+				
+				Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * kernel + 1, 2 * kernel + 1), new Point(kernel, kernel));
+				Imgproc.dilate(matImgSrc, matImgDst, element);	
+				
+				Imgcodecs.imwrite(ALL_DIR_OUT.get(i), matImgDst);
+				
+			}
 			
-			Mat matImgDst = new Mat();
-			Mat matImgSrc = Imgcodecs.imread(INPUT_FILE);
-			
-			int kernel = 1;
-			
-			Mat element = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2 * kernel + 1, 2 * kernel + 1), new Point(kernel, kernel));
-			Imgproc.dilate(matImgSrc, matImgDst, element);	
-			
-			Imgcodecs.imwrite(OUTPUT_FILE, matImgDst);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static void gaussian(){
-		
-		try {
-			carregaOpenCV();
-			
-//			String INPUT_FILE = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
-//			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/erosao.jpg";
-			
-			Mat matImgSrc = Imgcodecs.imread(INPUT_FILE);
-			Mat matImgDst = new Mat(matImgSrc.rows(),matImgSrc.cols(),matImgSrc.type());
-			
-			Imgproc.GaussianBlur(matImgSrc, matImgDst,new Size(45,45), 0);
-//			HighGui.imshow(outputFile, matImgDst); 
-			
-			Imgcodecs.imwrite(OUTPUT_FILE, matImgDst);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public static void canny(){
 		
 		try {
 			carregaOpenCV();
 			
-//			String INPUT_FILE = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/estrela.jpg";
-//			String outputFile = "/Users/lucas/Documents/Eclipse/Workspace/PDI/src/img/canny.jpg";
 			
-			Mat matImgDst = new Mat();
-			Mat matImgSrc = Imgcodecs.imread(INPUT_FILE);
-
-//			Imgproc.Canny(matImgSrc, matImgDst, 10, 100); 
-			Imgproc.Canny(matImgSrc, matImgDst, 150, 150); 
-			Imgcodecs.imwrite(OUTPUT_FILE, matImgDst);
+			monta_diretorios(GAUSSIAN, CANNY);
+			
+			for (int i = 0; i < ALL_DIR_IN.size(); i++) {
+				
+				Mat matImgDst = new Mat();
+				Mat matImgSrc = Imgcodecs.imread(ALL_DIR_IN.get(i));
+				
+				Imgproc.Canny(matImgSrc, matImgDst, 150, 150); 
+				Imgcodecs.imwrite(ALL_DIR_OUT.get(i), matImgDst);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -960,6 +976,38 @@ public class PDI {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void monta_diretorios(String input, String output){
+		
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 1 - Teste 1/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 2 - Teste 1/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 3 - Teste 1/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 4 - Teste 1/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 5 - Teste 1/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 1 - Teste 1/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 1 - Teste 2/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 2 - Teste 1/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 2 - Teste 2/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 3 - Teste 1/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 3 - Teste 2/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 4 - Teste 1/" + input);
+		ALL_DIR_IN.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 4 - Teste 2/" + input);
+		
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 1 - Teste 1/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 2 - Teste 1/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 3 - Teste 1/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 4 - Teste 1/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa 5 - Teste 1/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 1 - Teste 1/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 1 - Teste 2/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 2 - Teste 1/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 2 - Teste 2/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 3 - Teste 1/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 3 - Teste 2/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 4 - Teste 1/" + output);
+		ALL_DIR_OUT.add("/Users/lucas/Documents/Unisul/02 - Processamento Digital de Imagens/Trabalho Final/img/Placa Brasil 4 - Teste 2/" + output);
+		
 	}
 	
 }
